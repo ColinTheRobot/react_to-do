@@ -1,4 +1,8 @@
 'use strict'
+const React = require('react');
+const ReactDOM = require('react-dom');
+const CreateTaskForm = require('./create_task_form');
+const Task = require('./task');
 
 const App = React.createClass({
   getInitialState:function(){
@@ -33,7 +37,7 @@ const App = React.createClass({
   },
   filterNotComplete:function(key){
     return !this.filterComplete(key)
-  }, 
+  },
   renderTask:function(key){
     return (
       <Task key={key} index={key} details={this.state.tasks[key]} toggleTask={this.toggleTask} />
@@ -43,10 +47,10 @@ const App = React.createClass({
   render:function() {
     return (
       <div className="container">
-      
+
         <div className="row">
           <section className="col s12">
-          
+
             {/*to do unfinished tasks*/}
             <section id="todo-display" className="col s7">
               <ul className="collection with-header">
@@ -86,72 +90,4 @@ const App = React.createClass({
 
 });
 
-const CreateTaskForm = React.createClass({
-  handleSubmit:function(event) {
-    event.preventDefault();
-    var task = {
-      name : this.refs.name.value,
-      completed:false,
-      desc: this.refs.desc.value
-    }
-
-    // add the task to the state
-    this.props.addTask(task);
-    
-    // clear the form
-    this.refs.taskForm.reset();
-
-  },
-  render:function() {
-    return (
-      <form className="task-edit" ref="taskForm" onSubmit={this.handleSubmit}>
-        <h3>Create a new task</h3>
-
-        <div className="row">
-          <div className="input-field col s4">
-            <label htmlFor="task_name">Task Name</label>
-            <input type="text"  id="task_name" ref="name" />
-          </div>
-          <div className="input-field col s8">
-            <label htmlFor="task_desc">Task Description</label>
-            <input type="text"  id="task_desc" ref="desc" />
-          </div>
-        </div>
-        <div className="row">
-          <button className="btn waves-effect waves-light col s6" type="submit" name="action">Add Task</button>
-        </div>
-
-
-      </form>
-    )
-  }
-});
-
-
-const Task = React.createClass({
-  handleClick:function(event) {
-    event.preventDefault();
-    this.props.toggleTask(this.props.index);
-  },
-
-  render:function() {
-    return (
-      <li className="collection-item">
-        <div>
-          <strong>{this.props.details.name}</strong> {this.props.details.desc}
-          <a href="#" onClick={this.handleClick} className="secondary-content">
-            <i className="material-icons">check</i>
-          </a>
-        </div>
-      </li>
-  )
-  }
-});
-
-
 ReactDOM.render(<App />, document.querySelector('#container'))
-
-
-
-
-
